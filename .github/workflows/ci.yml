@@ -31,7 +31,7 @@ jobs:
       - name: Run tests with coverage
         run: |
           python -m pytest tests/ \
-            --cov=cylinderfit2026 \
+            --cov=cylfit \
             --cov-report=xml \
             --cov-report=term-missing \
             --cov-fail-under=80 \

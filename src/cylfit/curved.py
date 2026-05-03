@@ -6,7 +6,7 @@ This module fits a **curved cylinder** whose axis is a piecewise-linear spline
 
 Algorithm
 ---------
-1. **Global circular fit** — :func:`~cylinderfit2026.fit_cylinder` estimates a
+1. **Global circular fit** — :func:`~cylfit.fit_cylinder` estimates a
    global axis and radius to initialise the spine coordinate system.
 2. **Axial partitioning** — points are projected onto the global axis and split
    into *n_segments* overlapping windows.

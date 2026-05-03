@@ -1,4 +1,4 @@
-"""Sphinx configuration for CylinderFit 2026 documentation."""
+"""Sphinx configuration for cylfit documentation."""
 
 import sys
 from pathlib import Path
@@ -7,9 +7,9 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
 # -- Project info -----------------------------------------------------------
-project = "CylinderFit 2026"
-copyright = "2026, CylinderFit 2026 contributors"
-author = "CylinderFit 2026 contributors"
+project = "cylfit"
+copyright = "2026, cylfit contributors"
+author = "cylfit contributors"
 release = "0.1.0"
 
 # -- Extensions -------------------------------------------------------------
@@ -47,7 +47,7 @@ intersphinx_mapping = {
 
 # -- HTML output ------------------------------------------------------------
 html_theme = "furo"
-html_title = "CylinderFit 2026"
+html_title = "cylfit"
 html_theme_options = {
     "navigation_with_keys": True,
 }

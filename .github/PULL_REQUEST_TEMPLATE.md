@@ -23,7 +23,7 @@ Closes #
 - [ ] All tests pass locally: `python -m pytest tests/ -q`
 - [ ] `ruff check src/ tests/` exits cleanly (zero issues)
 - [ ] `ruff format --check src/ tests/` exits cleanly
-- [ ] `mypy src/cylinderfit2026` exits cleanly
+- [ ] `mypy src/cylfit` exits cleanly
 - [ ] Golden-value pins updated if any fitting algorithm changed
       (`python -m pytest tests/test_golden.py --regen-goldens` and reviewed diff)
 - [ ] New public API surfaces have NumPy-style docstrings

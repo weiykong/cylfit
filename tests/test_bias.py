@@ -14,7 +14,7 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-from cylinderfit2026 import fit_cylinder, fit_cylinder_known_radius, generate_noisy_cylinder
+from cylfit import fit_cylinder, fit_cylinder_known_radius, generate_noisy_cylinder
 
 
 N_TRIALS = 20   # number of independent random seeds per experiment

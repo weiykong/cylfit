@@ -16,7 +16,7 @@ python -m pip install -e ".[competitors]"
 
 ## Included Methods
 
-- `cylinderfit2026`: robust RANSAC/PCA guarded fitter with nonlinear refinement.
+- `cylfit`: robust RANSAC/PCA guarded fitter with nonlinear refinement.
 - `pca_baseline`: deterministic PCA initialization and least-squares refinement.
 - `cylinder_fitting_pypi`: enabled when `cylinder_fitting` is installed.
 - `pyransac3d`: enabled when `pyransac3d` is installed.

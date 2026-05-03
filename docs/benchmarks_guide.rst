@@ -1,7 +1,7 @@
 Benchmarking
 ============
 
-CylinderFit 2026 ships a built-in benchmark framework for comparing fitting
+cylfit ships a built-in benchmark framework for comparing fitting
 methods head-to-head on synthetic test cases.
 
 Running the Built-in Benchmark
@@ -9,7 +9,7 @@ Running the Built-in Benchmark
 
 .. code-block:: python
 
-   from cylinderfit2026 import (
+   from cylfit import (
        run_benchmark,
        summarize_benchmark,
        benchmark_markdown_report,
@@ -25,8 +25,8 @@ Adding Custom Cases
 
 .. code-block:: python
 
-   from cylinderfit2026.benchmarks import BenchmarkCase
-   from cylinderfit2026 import generate_noisy_cylinder
+   from cylfit.benchmarks import BenchmarkCase
+   from cylfit import generate_noisy_cylinder
 
    syn = generate_noisy_cylinder(
        radius=1.0, height=5.0, noise=0.02, outlier_fraction=0.3
@@ -39,7 +39,7 @@ Adding Competitor Methods
 
 .. code-block:: python
 
-   from cylinderfit2026 import run_benchmark, default_benchmark_cases, available_methods
+   from cylfit import run_benchmark, default_benchmark_cases, available_methods
 
    # available_methods() lists all detected competitors
    print(available_methods())

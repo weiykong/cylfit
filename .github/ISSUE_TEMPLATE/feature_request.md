@@ -1,6 +1,6 @@
 ---
 name: Feature request
-about: Propose a new feature or enhancement for cylinderfit2026
+about: Propose a new feature or enhancement for cylfit
 labels: enhancement
 assignees: ''
 ---

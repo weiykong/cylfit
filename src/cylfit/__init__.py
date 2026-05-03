@@ -1,4 +1,4 @@
-"""CylinderFit 2026 public API."""
+"""cylfit public API."""
 
 from .io import from_open3d, load_points
 from .elliptical import EllipticalCylinderModel, fit_elliptical_cylinder

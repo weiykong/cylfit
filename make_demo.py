@@ -19,9 +19,9 @@ from matplotlib.colors import Normalize
 from matplotlib.cm import ScalarMappable
 from mpl_toolkits.mplot3d import Axes3D  # noqa: F401
 
-from cylinderfit2026 import fit_cylinder, fit_cylinder_known_radius, generate_noisy_cylinder
-from cylinderfit2026.elliptical import fit_elliptical_cylinder
-from cylinderfit2026.cone import fit_cone, _cone_residuals
+from cylfit import fit_cylinder, fit_cylinder_known_radius, generate_noisy_cylinder
+from cylfit.elliptical import fit_elliptical_cylinder
+from cylfit.cone import fit_cone, _cone_residuals
 
 # ── Palette ────────────────────────────────────────────────────────────────
 BG      = "#0d1117"   # GitHub dark
@@ -350,7 +350,7 @@ cols4 = plt.cm.winter(norm4(res4))
 ax4.scatter(pts_e[:, 0], pts_e[:, 1], pts_e[:, 2],
             c=cols4, s=2.5, alpha=0.65, linewidths=0, depthshade=True)
 
-from cylinderfit2026.core import _orthonormal_basis as _core_basis
+from cylfit.core import _orthonormal_basis as _core_basis
 u_fit, v_fit = _core_basis(m_ell.axis_direction)
 X4, Y4, Z4 = _ellipse_mesh(
     m_ell.axis_point, m_ell.axis_direction,
@@ -544,7 +544,7 @@ ax8.legend(fontsize=7, loc="upper left",
 # Super-title
 # ═══════════════════════════════════════════════════════════════════════════
 fig.text(0.5, 0.975,
-         "cylinderfit2026  —  Robust 3-D Cylinder Fitting",
+         "cylfit  —  Robust 3-D Cylinder Fitting",
          ha="center", va="top", fontsize=14, fontweight="bold",
          color=TEXT, fontfamily="DejaVu Sans")
 fig.text(0.5, 0.956,

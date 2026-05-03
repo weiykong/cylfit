@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from cylinderfit2026.benchmarks import available_methods, benchmark_markdown_report, run_benchmark, summarize_benchmark
+from cylfit.benchmarks import available_methods, benchmark_markdown_report, run_benchmark, summarize_benchmark
 
 
 def main() -> None:

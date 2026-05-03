@@ -1,6 +1,6 @@
 """Cylinder network / pipe graph analysis.
 
-After detecting a set of cylinders with :func:`~cylinderfit2026.detect_cylinders`,
+After detecting a set of cylinders with :func:`~cylfit.detect_cylinders`,
 this module infers which cylinders are connected, the connection geometry, and
 builds a graph description of the pipe network.
 
@@ -18,8 +18,8 @@ for downstream traversal.
 
 Usage::
 
-    from cylinderfit2026 import detect_cylinders
-    from cylinderfit2026.network import find_cylinder_joints, build_pipe_network
+    from cylfit import detect_cylinders
+    from cylfit.network import find_cylinder_joints, build_pipe_network
 
     detections  = detect_cylinders(points, max_cylinders=6)
     joints      = find_cylinder_joints(detections)
@@ -140,8 +140,8 @@ def find_cylinder_joints(
     Parameters
     ----------
     cylinders:
-        List of :class:`~cylinderfit2026.DetectedCylinder` objects, typically
-        the output of :func:`~cylinderfit2026.detect_cylinders`.
+        List of :class:`~cylfit.DetectedCylinder` objects, typically
+        the output of :func:`~cylfit.detect_cylinders`.
     distance_threshold:
         Maximum axis-to-axis gap to consider two cylinders connected.
         ``None`` uses the sum of the two radii as the threshold (surface contact).

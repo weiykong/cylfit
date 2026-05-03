@@ -74,7 +74,7 @@ def available_methods() -> dict[str, Callable[[np.ndarray, float, int], Cylinder
     """Return benchmark methods available in the current Python environment."""
 
     methods: dict[str, Callable[[np.ndarray, float, int], CylinderModel]] = {
-        "cylinderfit2026": _run_ours,
+        "cylfit": _run_ours,
         "pca_baseline": _run_pca_baseline,
     }
     try:

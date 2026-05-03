@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from cylinderfit2026 import fit_cylinder, generate_noisy_cylinder, plot_cylinder_fit
+from cylfit import fit_cylinder, generate_noisy_cylinder, plot_cylinder_fit
 
 
 def main() -> None:
@@ -22,7 +22,7 @@ def main() -> None:
     fig, _ = plot_cylinder_fit(
         synthetic.points,
         model,
-        title="CylinderFit 2026 synthetic noisy point cloud",
+        title="cylfit synthetic noisy point cloud",
         random_state=21,
     )
     out = Path(__file__).with_name("synthetic_visualization.png")

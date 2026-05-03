@@ -1,6 +1,6 @@
-# Contributing to cylinderfit2026
+# Contributing to cylfit
 
-Thank you for your interest in improving cylinderfit2026! This document walks you
+Thank you for your interest in improving cylfit! This document walks you
 through everything you need to go from idea to merged pull request.
 
 ---
@@ -11,8 +11,8 @@ through everything you need to go from idea to merged pull request.
 
 ```bash
 # Fork on GitHub first, then:
-git clone https://github.com/<your-username>/cylinderfit2026.git
-cd cylinderfit2026
+git clone https://github.com/<your-username>/cylfit.git
+cd cylfit
 ```
 
 ### 2. Create a virtual environment
@@ -50,7 +50,7 @@ python -m pytest tests/test_ransac.py -q
 Run with coverage:
 
 ```bash
-python -m pytest tests/ --cov=cylinderfit2026 --cov-report=term-missing
+python -m pytest tests/ --cov=cylfit --cov-report=term-missing
 ```
 
 The CI matrix runs Python 3.9–3.12 on Ubuntu, macOS, and Windows. Please make
@@ -76,7 +76,7 @@ ruff format --check src/ tests/
 ruff format src/ tests/
 
 # Type-check
-mypy src/cylinderfit2026
+mypy src/cylfit
 ```
 
 All of the above must pass cleanly before a PR can be merged. The CI workflow
@@ -122,7 +122,7 @@ Before requesting a review, confirm:
 - [ ] All tests pass locally (`python -m pytest tests/ -q`)
 - [ ] `ruff check src/ tests/` reports zero issues
 - [ ] `ruff format --check src/ tests/` reports zero issues
-- [ ] `mypy src/cylinderfit2026` exits cleanly
+- [ ] `mypy src/cylfit` exits cleanly
 - [ ] Golden-value pins are updated if any fitting algorithm changed (see below)
 - [ ] New public API surfaces are documented with NumPy-style docstrings
 - [ ] CHANGELOG.md has an entry under `[Unreleased]`
@@ -163,7 +163,7 @@ pin-update commit is a red flag during review.
 Please use the [Bug Report issue template](.github/ISSUE_TEMPLATE/bug_report.md).
 Include a minimal reproducible example — the smaller, the better. Paste the full
 traceback and list your environment (OS, Python version, NumPy version,
-cylinderfit2026 version).
+cylfit version).
 
 ---
 

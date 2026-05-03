@@ -9,16 +9,16 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-from cylinderfit2026 import (
+from cylfit import (
     fit_cylinder,
     fit_cylinder_known_radius,
     fit_cylinder_with_normals,
     generate_noisy_cylinder,
     residuals_to_cylinder,
 )
-from cylinderfit2026.core import _auto_threshold, _normalize
-from cylinderfit2026.elliptical import _fit_ellipse_algebraic, fit_elliptical_cylinder
-from cylinderfit2026.cone import fit_cone
+from cylfit.core import _auto_threshold, _normalize
+from cylfit.elliptical import _fit_ellipse_algebraic, fit_elliptical_cylinder
+from cylfit.cone import fit_cone
 
 
 # ---------------------------------------------------------------------------

@@ -1,11 +1,11 @@
-# cylinderfit2026
+# cylfit
 
 **Fast, robust 3-D cylinder fitting for Python.**
 
-[![CI](https://github.com/weiykong/cylinderfit2026/actions/workflows/ci.yml/badge.svg)](https://github.com/weiykong/cylinderfit2026/actions/workflows/ci.yml)
-[![codecov](https://codecov.io/gh/weiykong/cylinderfit2026/branch/main/graph/badge.svg)](https://codecov.io/gh/weiykong/cylinderfit2026)
-[![PyPI](https://img.shields.io/pypi/v/cylinderfit2026.svg)](https://pypi.org/project/cylinderfit2026/)
-[![Python](https://img.shields.io/pypi/pyversions/cylinderfit2026.svg)](https://pypi.org/project/cylinderfit2026/)
+[![CI](https://github.com/weiykong/cylfit/actions/workflows/ci.yml/badge.svg)](https://github.com/weiykong/cylfit/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/weiykong/cylfit/branch/main/graph/badge.svg)](https://codecov.io/gh/weiykong/cylfit)
+[![PyPI](https://img.shields.io/pypi/v/cylfit.svg)](https://pypi.org/project/cylfit/)
+[![Python](https://img.shields.io/pypi/pyversions/cylfit.svg)](https://pypi.org/project/cylfit/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ---
@@ -34,15 +34,15 @@
 ## Install
 
 ```bash
-pip install cylinderfit2026
+pip install cylfit
 ```
 
 With optional extras:
 
 ```bash
-pip install "cylinderfit2026[visualize]"   # matplotlib plots
-pip install "cylinderfit2026[io]"           # LAS/LAZ support (laspy)
-pip install "cylinderfit2026[dev]"          # pytest + hypothesis + pytest-cov
+pip install "cylfit[visualize]"   # matplotlib plots
+pip install "cylfit[io]"           # LAS/LAZ support (laspy)
+pip install "cylfit[dev]"          # pytest + hypothesis + pytest-cov
 ```
 
 ---
@@ -51,7 +51,7 @@ pip install "cylinderfit2026[dev]"          # pytest + hypothesis + pytest-cov
 
 ```python
 import numpy as np
-from cylinderfit2026 import fit_cylinder, generate_noisy_cylinder
+from cylfit import fit_cylinder, generate_noisy_cylinder
 
 # Generate synthetic data (or load your own N×3 array)
 syn = generate_noisy_cylinder(radius=1.5, noise=0.02, outlier_fraction=0.25, random_state=42)
@@ -68,7 +68,7 @@ print(f"converged : {model.converged}")
 ### Load a real point cloud
 
 ```python
-from cylinderfit2026 import load_points, fit_cylinder
+from cylfit import load_points, fit_cylinder
 
 pts = load_points("scan.ply")          # PLY, PCD, LAS, XYZ, CSV
 model = fit_cylinder(pts, threshold=0.05)
@@ -82,17 +82,17 @@ print(model.to_json())
 ### Fitting functions
 
 ```python
-from cylinderfit2026 import (
+from cylfit import (
     fit_cylinder,               # general robust fitter
     fit_cylinder_known_radius,  # radius pinned
     fit_cylinder_with_normals,  # normal-seeded axis init
     fit_cylinder_fixed_axis,    # axis fixed
     fit_cylinder_constrained_axis,  # axis within a cone
 )
-from cylinderfit2026.elliptical import fit_elliptical_cylinder
-from cylinderfit2026.cone       import fit_cone
-from cylinderfit2026.curved     import fit_curved_cylinder
-from cylinderfit2026.network    import find_cylinder_joints, build_pipe_network
+from cylfit.elliptical import fit_elliptical_cylinder
+from cylfit.cone       import fit_cone
+from cylfit.curved     import fit_curved_cylinder
+from cylfit.network    import find_cylinder_joints, build_pipe_network
 ```
 
 ### Key parameters (`fit_cylinder`)
@@ -145,7 +145,7 @@ print(model.radius)   # exactly 0.0508
 ### Elliptical cross-section
 
 ```python
-from cylinderfit2026.elliptical import fit_elliptical_cylinder
+from cylfit.elliptical import fit_elliptical_cylinder
 
 model = fit_elliptical_cylinder(pts, threshold=0.05)
 print(model.semi_major, model.semi_minor, model.aspect_ratio)
@@ -154,7 +154,7 @@ print(model.semi_major, model.semi_minor, model.aspect_ratio)
 ### Cone
 
 ```python
-from cylinderfit2026.cone import fit_cone
+from cylfit.cone import fit_cone
 
 model = fit_cone(pts, ransac_trials=64, random_state=0)
 print(f"half-angle: {model.half_angle_deg:.2f}°")
@@ -164,7 +164,7 @@ print(f"apex: {model.apex}")
 ### Curved cylinder (bent pipe)
 
 ```python
-from cylinderfit2026.curved import fit_curved_cylinder
+from cylfit.curved import fit_curved_cylinder
 
 model = fit_curved_cylinder(pts, n_segments=10)
 print(f"spine length: {model.total_length:.3f}")
@@ -174,7 +174,7 @@ print(f"mean curvature: {model.curvature_mean:.4f}")
 ### Pipe network junction detection
 
 ```python
-from cylinderfit2026.network import find_cylinder_joints
+from cylfit.network import find_cylinder_joints
 
 cylinders = [fit_cylinder(seg) for seg in segments]
 joints = find_cylinder_joints(cylinders, threshold=0.05)
@@ -210,7 +210,7 @@ assert (m1.axis_direction == m2.axis_direction).all()   # bit-identical
 ## File I/O
 
 ```python
-from cylinderfit2026 import load_points
+from cylfit import load_points
 
 pts = load_points("scan.ply")      # ASCII or binary PLY
 pts = load_points("scan.pcd")      # PCL PCD (ASCII or binary)
@@ -223,7 +223,7 @@ pts = load_points("scan.csv")      # auto-detects comma delimiter
 
 ```python
 import open3d as o3d
-from cylinderfit2026 import from_open3d
+from cylfit import from_open3d
 
 cloud = o3d.io.read_point_cloud("scan.ply")
 pts = from_open3d(cloud)
@@ -271,7 +271,7 @@ and is more numerically stable near the axis.
 python -m pytest tests/ -q
 
 # With coverage report
-python -m pytest tests/ --cov=cylinderfit2026 --cov-report=html
+python -m pytest tests/ --cov=cylfit --cov-report=html
 
 # Property-based tests only
 python -m pytest tests/test_properties.py -v
@@ -293,11 +293,11 @@ The test suite includes:
 ## Benchmark
 
 ```bash
-pip install "cylinderfit2026[competitors]"
+pip install "cylfit[competitors]"
 python examples/run_benchmark.py
 ```
 
-Generates `examples/benchmark_report.md` comparing cylinderfit2026 against
+Generates `examples/benchmark_report.md` comparing cylfit against
 `pyransac3d` and `cylinder_fitting` across clean, noisy, partial-arc, and
 short-wide cylinder scenarios.
 
@@ -308,7 +308,7 @@ short-wide cylinder scenarios.
 See [CONTRIBUTING.md](CONTRIBUTING.md). In short:
 
 ```bash
-git clone https://github.com/weiykong/cylinderfit2026
+git clone https://github.com/weiykong/cylfit
 pip install -e ".[dev]"
 python -m pytest tests/ -q
 ruff check src/ tests/
@@ -320,4 +320,4 @@ PRs are welcome. Please update `CHANGELOG.md` and (if algorithm behaviour change
 
 ## License
 
-[MIT](LICENSE) © 2026 CylinderFit 2026 Contributors
+[MIT](LICENSE) © 2026 cylfit Contributors

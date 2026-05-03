@@ -6,8 +6,8 @@ import tempfile
 import numpy as np
 import pytest
 
-from cylinderfit2026 import fit_cylinder, from_open3d, load_points
-from cylinderfit2026.synthetic import generate_noisy_cylinder
+from cylfit import fit_cylinder, from_open3d, load_points
+from cylfit.synthetic import generate_noisy_cylinder
 
 
 def _write_ply_ascii(path, pts):

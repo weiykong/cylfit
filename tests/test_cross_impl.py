@@ -2,7 +2,7 @@
 
 When optional third-party cylinder fitting libraries are installed, these
 tests run a head-to-head comparison on shared synthetic datasets and verify
-that cylinderfit2026 agrees with them to within a reasonable tolerance.
+that cylfit agrees with them to within a reasonable tolerance.
 
 Libraries checked (all optional — tests are skipped if not installed):
   * pyransac3d  — ``pip install pyransac3d``
@@ -18,7 +18,7 @@ import importlib
 import numpy as np
 import pytest
 
-from cylinderfit2026 import fit_cylinder, generate_noisy_cylinder
+from cylfit import fit_cylinder, generate_noisy_cylinder
 
 
 def _try_import(name):
@@ -98,7 +98,7 @@ def _fit_cylinder_fitting(pts):
 # ---------------------------------------------------------------------------
 
 class TestVsPyransac3d:
-    """Compare cylinderfit2026 with pyransac3d on shared synthetic data."""
+    """Compare cylfit with pyransac3d on shared synthetic data."""
 
     @needs_pyransac3d
     def test_radius_agrees_on_clean_data(self, clean_cylinder_data):

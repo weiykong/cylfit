@@ -3,13 +3,13 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "cylinderfit2026"
+name = "cylfit"
 version = "0.1.0"
 description = "Fast, robust 3-D cylinder fitting — MAGSAC+PROSAC RANSAC, analytic LM, ellipse, cone, curved cylinder."
 readme = "README.md"
 requires-python = ">=3.9"
 license = "MIT"
-authors = [{ name = "CylinderFit 2026 contributors" }]
+authors = [{ name = "cylfit contributors" }]
 dependencies = ["numpy>=1.23"]
 keywords = [
     "point-cloud", "cylinder", "cone", "ellipse",
@@ -33,14 +33,14 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage      = "https://github.com/weiykong/cylinderfit2026"
-Repository    = "https://github.com/weiykong/cylinderfit2026"
-Documentation = "https://cylinderfit2026.readthedocs.io"
-"Bug Tracker" = "https://github.com/weiykong/cylinderfit2026/issues"
-Changelog     = "https://github.com/weiykong/cylinderfit2026/blob/main/CHANGELOG.md"
+Homepage      = "https://github.com/weiykong/cylfit"
+Repository    = "https://github.com/weiykong/cylfit"
+Documentation = "https://cylfit.readthedocs.io"
+"Bug Tracker" = "https://github.com/weiykong/cylfit/issues"
+Changelog     = "https://github.com/weiykong/cylfit/blob/main/CHANGELOG.md"
 
 [project.scripts]
-cylinderfit = "cylinderfit2026.cli:main"
+cylinderfit = "cylfit.cli:main"
 
 [project.optional-dependencies]
 dev = ["pytest>=8", "hypothesis>=6", "pytest-cov>=4"]
@@ -57,7 +57,7 @@ addopts = [
 ]
 
 [tool.coverage.run]
-source = ["cylinderfit2026"]
+source = ["cylfit"]
 branch = true
 omit = [
     "*/tests/*",

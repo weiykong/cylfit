@@ -1,6 +1,6 @@
 Multi-Cylinder Detection
 ========================
 
-.. autofunction:: cylinderfit2026.detect_cylinders
-.. autoclass:: cylinderfit2026.DetectedCylinder
+.. autofunction:: cylfit.detect_cylinders
+.. autoclass:: cylfit.DetectedCylinder
    :members:

@@ -55,4 +55,4 @@ jobs:
         uses: pypa/gh-action-pypi-publish@release/v1
         # No api_token needed — OIDC trusted publisher handles authentication.
         # Configure the trusted publisher at:
-        # https://pypi.org/manage/project/cylinderfit2026/settings/publishing/
+        # https://pypi.org/manage/project/cylfit/settings/publishing/

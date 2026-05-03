@@ -1,6 +1,6 @@
 Uncertainty Estimation
 ======================
 
-.. autofunction:: cylinderfit2026.estimate_uncertainty
-.. autoclass:: cylinderfit2026.FitUncertainty
+.. autofunction:: cylfit.estimate_uncertainty
+.. autoclass:: cylfit.FitUncertainty
    :members:

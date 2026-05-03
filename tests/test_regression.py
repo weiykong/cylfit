@@ -15,15 +15,15 @@ computation in a REPL and update the expected value + the associated comment.
 import numpy as np
 import pytest
 
-from cylinderfit2026 import (
+from cylfit import (
     fit_cylinder,
     fit_cylinder_known_radius,
     fit_cylinder_with_normals,
     generate_noisy_cylinder,
     residuals_to_cylinder,
 )
-from cylinderfit2026.cone import _cone_residuals, fit_cone
-from cylinderfit2026.elliptical import _fit_ellipse_algebraic
+from cylfit.cone import _cone_residuals, fit_cone
+from cylfit.elliptical import _fit_ellipse_algebraic
 
 
 # ---------------------------------------------------------------------------

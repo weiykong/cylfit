@@ -6,23 +6,23 @@ Installation
 
 .. code-block:: bash
 
-   pip install cylinderfit2026
+   pip install cylfit
 
 For optional features::
 
-   pip install cylinderfit2026[visualize]   # matplotlib plots
-   pip install cylinderfit2026[dev]         # pytest, hypothesis
+   pip install cylfit[visualize]   # matplotlib plots
+   pip install cylfit[dev]         # pytest, hypothesis
 
 Basic Fitting
 -------------
 
-Pass an ``N × 3`` NumPy array and get a :class:`~cylinderfit2026.CylinderModel`
+Pass an ``N × 3`` NumPy array and get a :class:`~cylfit.CylinderModel`
 back:
 
 .. code-block:: python
 
    import numpy as np
-   from cylinderfit2026 import fit_cylinder
+   from cylfit import fit_cylinder
 
    # Any N×3 array — from a sensor, file, or generated data
    points = np.load("scan.npy")
@@ -37,7 +37,7 @@ Loading Point Cloud Files
 
 .. code-block:: python
 
-   from cylinderfit2026 import load_points, fit_cylinder
+   from cylfit import load_points, fit_cylinder
 
    pts   = load_points("pipe_scan.ply")   # PLY, PCD, LAS/LAZ, XYZ
    model = fit_cylinder(pts)
@@ -48,7 +48,7 @@ Using an Open3D PointCloud
 .. code-block:: python
 
    import open3d as o3d
-   from cylinderfit2026 import from_open3d, fit_cylinder
+   from cylfit import from_open3d, fit_cylinder
 
    cloud = o3d.io.read_point_cloud("scan.ply")
    pts   = from_open3d(cloud)
@@ -61,7 +61,7 @@ Fix the axis direction (e.g., vertical pipes):
 
 .. code-block:: python
 
-   from cylinderfit2026 import fit_cylinder_constrained_axis
+   from cylfit import fit_cylinder_constrained_axis
    import numpy as np
 
    model = fit_cylinder_constrained_axis(
@@ -75,7 +75,7 @@ Multi-Cylinder Detection
 
 .. code-block:: python
 
-   from cylinderfit2026 import detect_cylinders
+   from cylfit import detect_cylinders
 
    detections = detect_cylinders(points, max_cylinders=5, min_inliers=300)
    for det in detections:

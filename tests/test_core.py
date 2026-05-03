@@ -2,7 +2,7 @@ import unittest
 
 import numpy as np
 
-from cylinderfit2026 import (
+from cylfit import (
     detect_cylinders,
     estimate_uncertainty,
     evaluate_fit,
@@ -195,7 +195,7 @@ class CylinderFitTests(unittest.TestCase):
 
     def test_benchmark_summary_and_report(self):
         synthetic = generate_noisy_cylinder(n_points=900, noise=0.01, outlier_fraction=0.02, random_state=23)
-        from cylinderfit2026.benchmarks import BenchmarkCase
+        from cylfit.benchmarks import BenchmarkCase
 
         results = run_benchmark(
             cases=[BenchmarkCase("small", synthetic, 0.05)],
@@ -205,7 +205,7 @@ class CylinderFitTests(unittest.TestCase):
         summary = summarize_benchmark(results)
         report = benchmark_markdown_report(results)
 
-        self.assertIn("cylinderfit2026", summary)
+        self.assertIn("cylfit", summary)
         self.assertIn("CylinderFit Benchmark Report", report)
 
 

@@ -1,5 +1,5 @@
 File I/O & Adapters
 ===================
 
-.. autofunction:: cylinderfit2026.load_points
-.. autofunction:: cylinderfit2026.from_open3d
+.. autofunction:: cylfit.load_points
+.. autofunction:: cylfit.from_open3d

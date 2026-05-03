@@ -1,6 +1,6 @@
 import numpy as np
 
-from cylinderfit2026 import fit_cylinder
+from cylfit import fit_cylinder
 
 
 def main() -> None:

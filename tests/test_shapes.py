@@ -7,7 +7,7 @@
 import numpy as np
 import pytest
 
-from cylinderfit2026 import (
+from cylfit import (
     detect_cylinders,
     find_cylinder_joints,
     build_pipe_network,
@@ -21,8 +21,8 @@ from cylinderfit2026 import (
     CylinderJoint,
     PipeNetwork,
 )
-from cylinderfit2026.cone import _cone_residuals
-from cylinderfit2026.network import _segment_to_segment_distance
+from cylfit.cone import _cone_residuals
+from cylfit.network import _segment_to_segment_distance
 
 
 # ---------------------------------------------------------------------------

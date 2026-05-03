@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Report a reproducible defect in cylinderfit2026
+about: Report a reproducible defect in cylfit
 labels: bug
 assignees: ''
 ---
@@ -17,7 +17,7 @@ example generated in code).
 
 ```python
 import numpy as np
-import cylinderfit2026 as cf
+import cylfit as cf
 
 # Minimal code that triggers the bug
 rng = np.random.default_rng(0)
@@ -47,7 +47,7 @@ Traceback (most recent call last):
 | Python version | e.g. 3.11.9 |
 | NumPy version | e.g. 2.1.0 |
 | SciPy version | e.g. 1.13.0 |
-| cylinderfit2026 version | e.g. 0.1.0 |
+| cylfit version | e.g. 0.1.0 |
 | Installation method | pip / conda / source |
 
 ## Additional context

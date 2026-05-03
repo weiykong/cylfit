@@ -11,8 +11,8 @@ from hypothesis import HealthCheck, assume, given, settings
 from hypothesis import strategies as st
 from hypothesis.extra.numpy import arrays
 
-from cylinderfit2026 import fit_cylinder, residuals_to_cylinder
-from cylinderfit2026.core import (
+from cylfit import fit_cylinder, residuals_to_cylinder
+from cylfit.core import (
     _analytic_jacobian,
     _auto_threshold,
     _axis_distances,
@@ -21,7 +21,7 @@ from cylinderfit2026.core import (
     _weighted_residuals,
     _pca_initial,
 )
-from cylinderfit2026.synthetic import generate_noisy_cylinder
+from cylfit.synthetic import generate_noisy_cylinder
 
 
 # ---------------------------------------------------------------------------

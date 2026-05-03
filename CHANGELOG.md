@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Planned
 - GPU-accelerated RANSAC via CuPy / CUDA backend
 - Batch fitting API for processing large point-cloud archives in parallel
-- ROS 2 integration package (`cylinderfit2026_ros`)
+- ROS 2 integration package (`cylfit_ros`)
 - Interactive 3-D visualiser (Plotly Dash)
 - STEP/IGES CAD export for fitted primitives
 
@@ -49,7 +49,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 #### File I/O
 - PLY, PCD, LAS/LAZ, XYZ, and CSV reader/writer with automatic format detection
-- Thin Open3D adapter (`cylinderfit2026.io.open3d_adapter`) for zero-copy
+- Thin Open3D adapter (`cylfit.io.open3d_adapter`) for zero-copy
   interchange with `open3d.geometry.PointCloud`
 
 #### Quality assurance
@@ -70,5 +70,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - API reference auto-generated from NumPy-style docstrings
 - Four worked example notebooks in `examples/`
 
-[Unreleased]: https://github.com/weiykong/cylinderfit2026/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/weiykong/cylinderfit2026/releases/tag/v0.1.0
+[Unreleased]: https://github.com/weiykong/cylfit/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/weiykong/cylfit/releases/tag/v0.1.0

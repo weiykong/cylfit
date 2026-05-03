@@ -1,7 +1,7 @@
 Algorithm Notes
 ===============
 
-CylinderFit 2026 combines three components: PROSAC/MAGSAC-upgraded RANSAC
+cylfit combines three components: PROSAC/MAGSAC-upgraded RANSAC
 initialization, Levenberg-Marquardt nonlinear refinement with a closed-form
 analytic Jacobian, and Huber-style iteratively reweighted least squares.
 
@@ -9,7 +9,7 @@ RANSAC Initialization (PROSAC + MAGSAC)
 ----------------------------------------
 
 Classic RANSAC draws random subsets of points, fits a model to each, and
-counts inliers at a hard threshold. CylinderFit 2026 improves on this in
+counts inliers at a hard threshold. cylfit improves on this in
 two ways:
 
 **PROSAC sampling.** Points are ranked by their residual under the initial PCA

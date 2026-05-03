@@ -1,6 +1,6 @@
-"""Compatibility import for CylinderFit 2026."""
+"""Compatibility import for cylfit."""
 
-from cylinderfit2026 import (
+from cylfit import (
     BenchmarkCase,
     BenchmarkResult,
     CylinderModel,

@@ -1,6 +1,6 @@
 Synthetic Data Generation
 ==========================
 
-.. autofunction:: cylinderfit2026.generate_noisy_cylinder
-.. autoclass:: cylinderfit2026.synthetic.SyntheticCylinder
+.. autofunction:: cylfit.generate_noisy_cylinder
+.. autoclass:: cylfit.synthetic.SyntheticCylinder
    :members:
