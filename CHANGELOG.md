@@ -70,5 +70,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - API reference auto-generated from NumPy-style docstrings
 - Four worked example notebooks in `examples/`
 
-[Unreleased]: https://github.com/YOUR_USERNAME/cylinderfit2026/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/YOUR_USERNAME/cylinderfit2026/releases/tag/v0.1.0
+[Unreleased]: https://github.com/weiykong/cylinderfit2026/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/weiykong/cylinderfit2026/releases/tag/v0.1.0

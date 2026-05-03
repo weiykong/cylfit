@@ -2,8 +2,8 @@
 
 **Fast, robust 3-D cylinder fitting for Python.**
 
-[![CI](https://github.com/YOUR_USERNAME/cylinderfit2026/actions/workflows/ci.yml/badge.svg)](https://github.com/YOUR_USERNAME/cylinderfit2026/actions/workflows/ci.yml)
-[![codecov](https://codecov.io/gh/YOUR_USERNAME/cylinderfit2026/branch/main/graph/badge.svg)](https://codecov.io/gh/YOUR_USERNAME/cylinderfit2026)
+[![CI](https://github.com/weiykong/cylinderfit2026/actions/workflows/ci.yml/badge.svg)](https://github.com/weiykong/cylinderfit2026/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/weiykong/cylinderfit2026/branch/main/graph/badge.svg)](https://codecov.io/gh/weiykong/cylinderfit2026)
 [![PyPI](https://img.shields.io/pypi/v/cylinderfit2026.svg)](https://pypi.org/project/cylinderfit2026/)
 [![Python](https://img.shields.io/pypi/pyversions/cylinderfit2026.svg)](https://pypi.org/project/cylinderfit2026/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -308,7 +308,7 @@ short-wide cylinder scenarios.
 See [CONTRIBUTING.md](CONTRIBUTING.md). In short:
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/cylinderfit2026
+git clone https://github.com/weiykong/cylinderfit2026
 pip install -e ".[dev]"
 python -m pytest tests/ -q
 ruff check src/ tests/

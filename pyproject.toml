@@ -33,11 +33,11 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage      = "https://github.com/YOUR_USERNAME/cylinderfit2026"
-Repository    = "https://github.com/YOUR_USERNAME/cylinderfit2026"
+Homepage      = "https://github.com/weiykong/cylinderfit2026"
+Repository    = "https://github.com/weiykong/cylinderfit2026"
 Documentation = "https://cylinderfit2026.readthedocs.io"
-"Bug Tracker" = "https://github.com/YOUR_USERNAME/cylinderfit2026/issues"
-Changelog     = "https://github.com/YOUR_USERNAME/cylinderfit2026/blob/main/CHANGELOG.md"
+"Bug Tracker" = "https://github.com/weiykong/cylinderfit2026/issues"
+Changelog     = "https://github.com/weiykong/cylinderfit2026/blob/main/CHANGELOG.md"
 
 [project.scripts]
 cylinderfit = "cylinderfit2026.cli:main"
