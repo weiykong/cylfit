@@ -1,0 +1,82 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "cylinderfit2026"
+version = "0.1.0"
+description = "Fast, robust 3-D cylinder fitting — MAGSAC+PROSAC RANSAC, analytic LM, ellipse, cone, curved cylinder."
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+authors = [{ name = "CylinderFit 2026 contributors" }]
+dependencies = ["numpy>=1.23"]
+keywords = [
+    "point-cloud", "cylinder", "cone", "ellipse",
+    "ransac", "least-squares", "geometry", "3d", "lidar",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Mathematics",
+    "Topic :: Scientific/Engineering :: Visualization",
+    "Typing :: Typed",
+]
+
+[project.urls]
+Homepage      = "https://github.com/YOUR_USERNAME/cylinderfit2026"
+Repository    = "https://github.com/YOUR_USERNAME/cylinderfit2026"
+Documentation = "https://cylinderfit2026.readthedocs.io"
+"Bug Tracker" = "https://github.com/YOUR_USERNAME/cylinderfit2026/issues"
+Changelog     = "https://github.com/YOUR_USERNAME/cylinderfit2026/blob/main/CHANGELOG.md"
+
+[project.scripts]
+cylinderfit = "cylinderfit2026.cli:main"
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "hypothesis>=6", "pytest-cov>=4"]
+visualize = ["matplotlib>=3.7"]
+competitors = ["cylinder_fitting>=1.1.4", "pyransac3d>=0.6.0"]
+docs = ["sphinx>=5", "furo", "sphinx-autodoc-typehints"]
+io = ["laspy[lazrs]"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = [
+    "--tb=short",
+]
+
+[tool.coverage.run]
+source = ["cylinderfit2026"]
+branch = true
+omit = [
+    "*/tests/*",
+    "*/conftest.py",
+]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = false
+fail_under = 80
+exclude_lines = [
+    "pragma: no cover",
+    "if TYPE_CHECKING:",
+    "raise NotImplementedError",
+    "@overload",
+]
+
+[tool.coverage.html]
+directory = "htmlcov"
+
+[tool.coverage.xml]
+output = "coverage.xml"

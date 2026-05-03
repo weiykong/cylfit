@@ -1,0 +1,26 @@
+coverage:
+  status:
+    project:
+      default:
+        target: 80%        # overall project coverage must reach this threshold
+        threshold: 2%      # allow coverage to slip by at most 2% before failing
+        if_not_found: success
+        if_ci_failed: error
+    patch:
+      default:
+        target: 70%        # lines changed in the PR must be at least 70% covered
+        threshold: 5%      # allow patch coverage to slip by at most 5%
+        if_not_found: success
+        if_ci_failed: error
+
+ignore:
+  - "docs/"
+  - "examples/"
+  - "make_demo.py"
+
+comment:
+  layout: "reach,diff,flags,files"
+  behavior: default
+  require_changes: false
+  require_base: false
+  require_head: true
