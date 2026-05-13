@@ -33,7 +33,6 @@ from .core import (
     _auto_threshold,
     _axis_distances,
     _normalize,
-    _orthonormal_basis,
     _pca_initial,
     _validate_points,
 )

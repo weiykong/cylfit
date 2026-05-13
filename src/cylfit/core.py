@@ -587,7 +587,6 @@ def _ransac_or_pca_initial(
         threshold = _auto_threshold(best_res)
     best_score = _candidate_score(best_res, threshold)
 
-    n = points.shape[0]
     if trials == 0:
         return best
 

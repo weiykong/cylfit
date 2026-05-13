@@ -12,7 +12,6 @@ one outcome.  They run in reasonable time because n_points is kept modest.
 from __future__ import annotations
 
 import numpy as np
-import pytest
 
 from cylfit import fit_cylinder, fit_cylinder_known_radius, generate_noisy_cylinder
 

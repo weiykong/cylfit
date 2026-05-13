@@ -102,7 +102,6 @@ class TestInputValidation:
 class TestMinimumPoints:
     def test_exactly_8_points_does_not_crash(self):
         """fit_cylinder with exactly 8 points must not crash."""
-        rng = np.random.default_rng(1)
         # 8 points approximately on a cylinder
         theta = np.linspace(0, 2 * np.pi, 8, endpoint=False)
         pts = np.column_stack([np.cos(theta), np.sin(theta), np.zeros(8)])
@@ -359,8 +358,6 @@ class TestEllipseAlgebraicEdgeCases:
 class TestConeEdgeCases:
     def test_cone_min_points_no_crash(self):
         """Exactly 8 points on a perfect cone."""
-        apex = np.zeros(3)
-        axis = np.array([0., 0., 1.])
         alpha = np.deg2rad(30.0)
         t_vals = np.linspace(0.5, 2.0, 8)
         r_vals = t_vals * np.tan(alpha)

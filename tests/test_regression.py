@@ -22,7 +22,7 @@ from cylfit import (
     generate_noisy_cylinder,
     residuals_to_cylinder,
 )
-from cylfit.cone import _cone_residuals, fit_cone
+from cylfit.cone import _cone_residuals
 from cylfit.elliptical import _fit_ellipse_algebraic
 
 

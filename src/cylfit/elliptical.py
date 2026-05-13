@@ -30,9 +30,7 @@ import numpy as np
 
 from .core import (
     _auto_threshold,
-    _normalize,
     _orthonormal_basis,
-    _pca_initial,
     _ransac_or_pca_initial,
     _validate_points,
     residuals_to_cylinder,

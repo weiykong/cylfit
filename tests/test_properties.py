@@ -6,7 +6,6 @@ cannot exhaustively cover.
 """
 
 import numpy as np
-import pytest
 from hypothesis import HealthCheck, assume, given, settings
 from hypothesis import strategies as st
 from hypothesis.extra.numpy import arrays
@@ -19,7 +18,6 @@ from cylfit.core import (
     _normalize,
     _numeric_jacobian,
     _weighted_residuals,
-    _pca_initial,
 )
 from cylfit.synthetic import generate_noisy_cylinder
 

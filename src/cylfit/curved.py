@@ -28,10 +28,7 @@ import numpy as np
 
 from .core import (
     _auto_threshold,
-    _axis_distances,
-    _normalize,
     _orthonormal_basis,
-    _pca_initial,
     _validate_points,
     fit_cylinder,
 )
@@ -157,7 +154,6 @@ def fit_curved_cylinder(
     CurvedCylinderModel
     """
     pts = _validate_points(points)
-    rng = np.random.default_rng(random_state)
     n_segs = max(2, int(n_segments))
 
     # --- Global circular fit -------------------------------------------------

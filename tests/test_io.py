@@ -1,7 +1,5 @@
 """Tests for file I/O and Open3D adapter."""
-import os
 import struct
-import tempfile
 
 import numpy as np
 import pytest

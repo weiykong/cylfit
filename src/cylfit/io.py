@@ -105,7 +105,7 @@ def _load_ply(path: Path) -> np.ndarray:
         data_start += 1
 
     header = header_bytes.decode("ascii", errors="replace")
-    lines = [l.strip() for l in header.splitlines()]
+    lines = [line.strip() for line in header.splitlines()]
 
     fmt = "ascii"
     n_vertices = 0
