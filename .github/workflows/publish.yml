@@ -6,8 +6,45 @@ on:
       - "v*.*.*"
 
 jobs:
+  test:
+    name: Test before publish
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install package + dev dependencies
+        run: pip install -e ".[dev,visualize]" hypothesis
+
+      - name: Run test suite
+        run: python -m pytest tests/ -q --tb=short
+
+  lint:
+    name: Lint before publish
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install ruff
+        run: pip install ruff
+
+      - name: Ruff check
+        run: ruff check src/ tests/ --select=E,F,W --ignore=E501
+
   build:
     name: Build distribution packages
+    needs: [test, lint]
     runs-on: ubuntu-latest
 
     steps:

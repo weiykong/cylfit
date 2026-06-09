@@ -7,6 +7,12 @@ import numpy as np
 
 from .core import CylinderModel, fit_cylinder
 
+try:
+    from scipy.spatial import KDTree as _KDTree  # type: ignore[import]
+    _HAS_SCIPY = True
+except ImportError:
+    _HAS_SCIPY = False
+
 
 @dataclass(frozen=True)
 class DetectedCylinder:
@@ -55,7 +61,7 @@ def detect_cylinders(
 
     rng = np.random.default_rng(random_state)
     remaining = np.arange(pts.shape[0])
-    detections: list[DetectedCylinder] = []
+    detections = []
 
     for _ in range(max_cylinders):
         if remaining.size < max(8, min_inliers):
@@ -79,28 +85,66 @@ def detect_cylinders(
 
 
 def _connected_components(points: np.ndarray, eps: float) -> list[np.ndarray]:
-    n = points.shape[0]
-    remaining = np.ones(n, dtype=bool)
-    components = []
-    eps2 = eps * eps
+    """Group points into Euclidean connected components.
 
-    while remaining.any():
-        start = int(np.flatnonzero(remaining)[0])
+    Uses a KD-tree (via scipy) when available for O(N log N) performance.
+    Falls back to a vectorised numpy BFS that is O(N²) in memory but avoids
+    the O(N²) *Python-loop* overhead of rebuilding the candidate list on every
+    BFS pop.
+    """
+    if _HAS_SCIPY:
+        return _connected_components_kdtree(points, eps)
+    return _connected_components_numpy(points, eps)
+
+
+def _connected_components_kdtree(points: np.ndarray, eps: float) -> list[np.ndarray]:
+    tree = _KDTree(points)
+    # query_ball_tree builds the full neighbor list in one C call
+    neighbor_lists = tree.query_ball_tree(tree, r=eps)
+    n = points.shape[0]
+    visited = np.zeros(n, dtype=bool)
+    components = []
+    for start in range(n):
+        if visited[start]:
+            continue
+        component: list[int] = []
         queue = [start]
-        remaining[start] = False
-        component = []
+        visited[start] = True
         while queue:
             idx = queue.pop()
             component.append(idx)
-            candidates = np.flatnonzero(remaining)
-            if candidates.size == 0:
-                continue
-            delta = points[candidates] - points[idx]
-            neighbors = candidates[np.einsum("ij,ij->i", delta, delta) <= eps2]
-            if neighbors.size:
-                remaining[neighbors] = False
-                queue.extend(neighbors.tolist())
+            for nb in neighbor_lists[idx]:
+                if not visited[nb]:
+                    visited[nb] = True
+                    queue.append(nb)
         components.append(np.asarray(component, dtype=int))
+    components.sort(key=lambda c: c.size, reverse=True)
+    return components
 
-    components.sort(key=lambda item: item.size, reverse=True)
+
+def _connected_components_numpy(points: np.ndarray, eps: float) -> list[np.ndarray]:
+    """Pure-numpy fallback. Avoids re-scanning all points on each BFS pop by
+    maintaining a visited mask and scanning only unvisited points per step."""
+    n = points.shape[0]
+    eps2 = eps * eps
+    visited = np.zeros(n, dtype=bool)
+    components = []
+    for start in range(n):
+        if visited[start]:
+            continue
+        component: list[int] = []
+        queue = [start]
+        visited[start] = True
+        while queue:
+            idx = queue.pop()
+            component.append(idx)
+            unvisited = np.flatnonzero(~visited)
+            if unvisited.size == 0:
+                continue
+            delta = points[unvisited] - points[idx]
+            close = unvisited[np.einsum("ij,ij->i", delta, delta) <= eps2]
+            visited[close] = True
+            queue.extend(close.tolist())
+        components.append(np.asarray(component, dtype=int))
+    components.sort(key=lambda c: c.size, reverse=True)
     return components

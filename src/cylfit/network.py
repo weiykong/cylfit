@@ -128,7 +128,7 @@ def find_cylinder_joints(
     cylinders: Sequence[DetectedCylinder],
     *,
     distance_threshold: Optional[float] = None,
-    angle_threshold_deg: float = 160.0,
+    angle_threshold_deg: float = 90.0,
 ) -> List[CylinderJoint]:
     """Find joints (connections) between cylinders based on axis proximity.
 
@@ -146,9 +146,12 @@ def find_cylinder_joints(
         Maximum axis-to-axis gap to consider two cylinders connected.
         ``None`` uses the sum of the two radii as the threshold (surface contact).
     angle_threshold_deg:
-        Maximum axis-to-axis angle (in degrees) for a valid joint.  Pairs with
-        a larger angle are filtered out (near-parallel reversed axes are still
-        kept because angle is measured as min(θ, 180°−θ)).
+        Maximum acute angle (in degrees) between two cylinder axes for a valid
+        joint.  The angle is computed as ``arccos(|dot(a, b)|)``, so it is
+        always in **[0°, 90°]** regardless of axis orientation — anti-parallel
+        axes read the same as parallel ones.  The default (``90.0``) accepts
+        all pairs; set a smaller value (e.g. ``30.0``) to restrict joints to
+        near-parallel cylinders only.
 
     Returns
     -------
@@ -201,7 +204,7 @@ def build_pipe_network(
     joints: Optional[List[CylinderJoint]] = None,
     *,
     distance_threshold: Optional[float] = None,
-    angle_threshold_deg: float = 160.0,
+    angle_threshold_deg: float = 90.0,
 ) -> PipeNetwork:
     """Build a :class:`PipeNetwork` from cylinders, computing joints if needed.
 

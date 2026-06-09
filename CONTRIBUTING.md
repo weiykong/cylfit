@@ -44,7 +44,7 @@ python -m pytest tests/ -q
 Run a specific test file:
 
 ```bash
-python -m pytest tests/test_ransac.py -q
+python -m pytest tests/test_core.py -q
 ```
 
 Run with coverage:
@@ -123,38 +123,27 @@ Before requesting a review, confirm:
 - [ ] `ruff check src/ tests/` reports zero issues
 - [ ] `ruff format --check src/ tests/` reports zero issues
 - [ ] `mypy src/cylfit` exits cleanly
-- [ ] Golden-value pins are updated if any fitting algorithm changed (see below)
+- [ ] Regression values in `tests/test_regression.py` are updated if any fitting algorithm changed
 - [ ] New public API surfaces are documented with NumPy-style docstrings
 - [ ] CHANGELOG.md has an entry under `[Unreleased]`
 - [ ] The PR description explains *what* changed and *why*
 
 ---
 
-## Updating golden-value pins
+## Updating regression values
 
-Golden-value tests (`tests/test_golden.py`) store expected parameter arrays that
-are produced by fitting specific, deterministic point clouds. They exist to catch
+Regression tests (`tests/test_regression.py`) pin expected parameter arrays
+produced by fitting specific, deterministic point clouds. They exist to catch
 unintentional numerical regressions.
 
-**When to update pins:** only when you intentionally change a fitting algorithm
-and the new output is correct (e.g., a bug fix that shifts parameter estimates,
-or a numerical improvement).
+**When to update:** only when you intentionally change a fitting algorithm and
+the new output is correct (e.g., a bug fix that shifts parameter estimates, or
+a numerical improvement).
 
-**How to update pins:**
-
-```bash
-# Regenerate all golden files
-python -m pytest tests/test_golden.py --regen-goldens
-
-# Review the diff carefully — every changed value should be explainable
-git diff tests/golden/
-
-# Add and commit the updated files along with your algorithm change
-git add tests/golden/
-```
-
-Never update golden pins without a corresponding algorithmic change; a pure
-pin-update commit is a red flag during review.
+**How to update:** edit the pinned values in `tests/test_regression.py` directly,
+review each changed value carefully, and commit the updates together with your
+algorithm change. A pure value-update commit with no algorithmic change is a
+red flag during review.
 
 ---
 
