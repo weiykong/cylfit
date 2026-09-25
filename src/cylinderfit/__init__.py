@@ -1,63 +1,17 @@
-"""Compatibility import for cylfit."""
+"""Deprecated compatibility alias for :mod:`cylfit`.
 
-from cylfit import (
-    BenchmarkCase,
-    BenchmarkResult,
-    CylinderModel,
-    DetectedCylinder,
-    FitMeasures,
-    FitMetrics,
-    FitUncertainty,
-    PreprocessResult,
-    available_methods,
-    benchmark_markdown_report,
-    detect_cylinders,
-    default_benchmark_cases,
-    evaluate_fit,
-    fit_cylinder,
-    fit_cylinder_auto,
-    fit_cylinder_constrained_axis,
-    fit_cylinder_fixed_axis,
-    fit_cylinder_known_radius,
-    fit_cylinder_with_normals,
-    generate_noisy_cylinder,
-    measure_fit,
-    plot_cylinder_fit,
-    residuals_to_cylinder,
-    robust_spatial_trim,
-    run_benchmark,
-    summarize_benchmark,
-    estimate_uncertainty,
-    voxel_downsample,
+``import cylinderfit`` still works but will be removed in a future release;
+use ``import cylfit`` instead.
+"""
+
+import warnings
+
+from cylfit import *  # noqa: F401,F403
+from cylfit import __all__, __version__  # noqa: F401
+
+warnings.warn(
+    "The 'cylinderfit' package has been renamed to 'cylfit'; "
+    "'import cylinderfit' is deprecated and will be removed in a future release.",
+    DeprecationWarning,
+    stacklevel=2,
 )
-
-__all__ = [
-    "BenchmarkCase",
-    "BenchmarkResult",
-    "CylinderModel",
-    "DetectedCylinder",
-    "FitMetrics",
-    "FitMeasures",
-    "FitUncertainty",
-    "PreprocessResult",
-    "available_methods",
-    "benchmark_markdown_report",
-    "detect_cylinders",
-    "default_benchmark_cases",
-    "evaluate_fit",
-    "fit_cylinder",
-    "fit_cylinder_auto",
-    "fit_cylinder_constrained_axis",
-    "fit_cylinder_fixed_axis",
-    "fit_cylinder_known_radius",
-    "fit_cylinder_with_normals",
-    "generate_noisy_cylinder",
-    "measure_fit",
-    "plot_cylinder_fit",
-    "residuals_to_cylinder",
-    "robust_spatial_trim",
-    "run_benchmark",
-    "summarize_benchmark",
-    "estimate_uncertainty",
-    "voxel_downsample",
-]

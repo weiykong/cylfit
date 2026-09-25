@@ -1,6 +1,7 @@
 """Sphinx configuration for cylfit documentation."""
 
 import sys
+import tomllib
 from pathlib import Path
 
 # Make the package importable without installing
@@ -10,7 +11,9 @@ sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 project = "cylfit"
 copyright = "2026, cylfit contributors"
 author = "cylfit contributors"
-release = "0.1.0"
+with open(Path(__file__).parent.parent / "pyproject.toml", "rb") as _f:
+    release = tomllib.load(_f)["project"]["version"]
+version = release
 
 # -- Extensions -------------------------------------------------------------
 extensions = [

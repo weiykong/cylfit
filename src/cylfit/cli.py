@@ -5,12 +5,14 @@ import json
 
 import numpy as np
 
+from . import __version__
 from .core import fit_cylinder
 from .metrics import measure_fit
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Fit a cylinder to an N x 3 point cloud.")
+    parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
     parser.add_argument("points", help="CSV/TXT file with x,y,z columns")
     parser.add_argument("--delimiter", default=None, help="Input delimiter. Defaults to NumPy auto parsing.")
     parser.add_argument("--threshold", type=float, default=None, help="Inlier residual threshold")

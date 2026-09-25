@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- `cylfit` console script (`cylinderfit` kept as a deprecated alias) and `--version` flag.
+- `cylfit.__version__`, read from installed package metadata.
+- `py.typed` marker so type checkers use the package's inline annotations.
+- `.readthedocs.yaml` for Read the Docs builds.
+
+### Fixed
+- The `cylinderfit` compatibility package is now shipped in the wheel; importing it
+  emits a `DeprecationWarning` and re-exports the full `cylfit` API.
+- Docs version is read from `pyproject.toml` instead of being hard-coded.
+- Publish workflow verifies the release tag matches the `pyproject.toml` version.
+
 ### Planned
 - GPU-accelerated RANSAC via CuPy / CUDA backend
 - Batch fitting API for processing large point-cloud archives in parallel

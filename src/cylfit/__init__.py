@@ -1,5 +1,12 @@
 """cylfit public API."""
 
+from importlib.metadata import PackageNotFoundError, version
+
+try:
+    __version__ = version("cylfit")
+except PackageNotFoundError:  # pragma: no cover - running from a source tree
+    __version__ = "0+unknown"
+
 from .io import from_open3d, load_points
 from .elliptical import EllipticalCylinderModel, fit_elliptical_cylinder
 from .cone import ConeModel, fit_cone
@@ -31,6 +38,7 @@ from .uncertainty import FitUncertainty, estimate_uncertainty
 from .visualize import plot_cylinder_fit
 
 __all__ = [
+    "__version__",
     "CylinderModel",
     "BenchmarkCase",
     "BenchmarkResult",

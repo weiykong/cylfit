@@ -40,7 +40,8 @@ Documentation = "https://cylfit.readthedocs.io"
 Changelog     = "https://github.com/weiykong/cylfit/blob/main/CHANGELOG.md"
 
 [project.scripts]
-cylinderfit = "cylfit.cli:main"
+cylfit = "cylfit.cli:main"
+cylinderfit = "cylfit.cli:main"  # deprecated alias
 
 [project.optional-dependencies]
 dev = ["pytest>=8", "hypothesis>=6", "pytest-cov>=4"]
@@ -48,6 +49,9 @@ visualize = ["matplotlib>=3.7"]
 competitors = ["cylinder_fitting>=1.1.4", "pyransac3d>=0.6.0"]
 docs = ["sphinx>=5", "furo", "sphinx-autodoc-typehints"]
 io = ["laspy[lazrs]"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/cylfit", "src/cylinderfit"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
