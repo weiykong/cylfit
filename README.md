@@ -22,7 +22,7 @@
 |---------|--------|
 | **Estimation** | MAGSAC soft scoring + PROSAC quality-ranked sampling |
 | **Refinement** | Levenberg–Marquardt with analytic closed-form Jacobian |
-| **Parallelism** | Multi-threaded RANSAC via `ThreadPoolExecutor` (`n_jobs`) |
+| **Scoring** | Batched RANSAC candidate scoring; optional threads for large clouds (`n_jobs`) |
 | **Shapes** | Circular cylinder · Elliptical cylinder · Cone · Curved cylinder · Pipe network |
 | **I/O** | PLY · PCD · LAS/LAZ · XYZ · CSV · Open3D adapter |
 | **Testing** | 168 tests — property-based (Hypothesis), golden-value regression, statistical bias, cross-implementation |
@@ -101,7 +101,7 @@ from cylfit.network    import find_cylinder_joints, build_pipe_network
 |-----------|---------|-------------|
 | `threshold` | auto | Inlier distance (same units as points). Auto-estimated when omitted. |
 | `ransac_trials` | 128 | RANSAC iterations. More → more robust, slower. |
-| `n_jobs` | 1 | Worker threads for parallel RANSAC. |
+| `n_jobs` | 1 | Threads for RANSAC scoring on clouds > ~32k points. Same result for any value. |
 | `random_state` | None | Integer seed for full reproducibility. |
 | `known_radius` | None | Fix radius and solve only for axis + position. |
 | `initial_axis` | None | Warm-start axis direction to skip RANSAC. |

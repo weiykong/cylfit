@@ -13,6 +13,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `py.typed` marker so type checkers use the package's inline annotations.
 - `.readthedocs.yaml` for Read the Docs builds.
 
+### Changed
+- RANSAC candidates are now scored in batches with one matrix product per batch,
+  making the RANSAC phase ~3.5x faster on 200k+ point clouds (results unchanged).
+- `n_jobs` now parallelises candidate scoring over point blocks instead of
+  splitting the trials. The fitted model no longer depends on `n_jobs`, the PROSAC
+  phase is no longer repeated per worker, and small clouds no longer slow down.
+
 ### Fixed
 - The `cylinderfit` compatibility package is now shipped in the wheel; importing it
   emits a `DeprecationWarning` and re-exports the full `cylfit` API.

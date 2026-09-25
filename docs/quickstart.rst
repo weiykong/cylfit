@@ -84,11 +84,16 @@ Multi-Cylinder Detection
 Parallel RANSAC
 ---------------
 
-Speed up large-cloud fitting with all CPU cores:
+RANSAC candidates are scored in batches against the whole cloud. For large
+clouds (more than ~32k points) the scoring can also be spread over threads:
 
 .. code-block:: python
 
    model = fit_cylinder(points, ransac_trials=256, n_jobs=-1)
+
+The fitted model is identical for every ``n_jobs`` value. NumPy's BLAS library
+is usually multi-threaded already, so the extra gain is largest when BLAS is
+limited to one thread (e.g. ``OPENBLAS_NUM_THREADS=1``).
 
 Exporting Results
 -----------------

@@ -163,10 +163,10 @@ def fit_cylinder(
     random_state:
         Seed for deterministic RANSAC and refinement sampling.
     n_jobs:
-        Number of parallel workers for RANSAC trials. ``1`` (default) runs
-        serially. ``-1`` uses all logical CPU cores. Parallelism is implemented
-        via :class:`concurrent.futures.ThreadPoolExecutor`; numpy SVD releases
-        the GIL so threads provide real concurrency on multi-core hardware.
+        Number of threads used to score RANSAC candidates. ``1`` (default)
+        runs serially; ``-1`` uses all logical CPU cores. Threads only engage
+        for clouds larger than ~32k points, where scoring dominates; the
+        fitted model is the same for every ``n_jobs``.
     """
 
     pts = _validate_points(points)
@@ -574,10 +574,10 @@ def _ransac_or_pca_initial(
     MAGSAC soft scoring replaces the hard inlier count, making the search
     insensitive to the exact threshold value.
 
-    When *n_jobs* != 1 the trials are split across threads via
-    :class:`concurrent.futures.ThreadPoolExecutor`.  NumPy SVD and residual
-    evaluation release the GIL, so threading provides real parallelism on
-    multi-core hardware without pickling overhead.
+    Candidates are scored in batches against the whole cloud, which dominates the
+    run time. When *n_jobs* != 1 the point blocks of each batch are scored on a
+    thread pool (NumPy releases the GIL in BLAS and ufunc loops). The trial
+    sequence is the same for every *n_jobs*, so the result does not depend on it.
     """
     best = _axis_initial(points, initial_axis, known_radius) if initial_axis is not None else _pca_initial(points)
     if known_radius is not None:
@@ -591,50 +591,47 @@ def _ransac_or_pca_initial(
         return best
 
     quality_order = np.argsort(np.abs(best_res))
+    n_workers = _resolve_n_jobs(n_jobs)
+    block_rows = _score_block_rows(_SCORE_BATCH)
 
-    # Resolve worker count
-    if n_jobs == -1:
-        import os
-        n_workers = max(1, os.cpu_count() or 1)
-    else:
-        n_workers = max(1, n_jobs)
-
-    if n_workers == 1 or trials < 16:
-        # Serial path (default)
-        best, best_score = _ransac_trials_batch(
+    if n_workers == 1 or points.shape[0] <= block_rows:
+        best, _ = _ransac_trials(
             points, best, best_score, threshold, trials, sample_size,
             quality_order, known_radius, orientation_axis, min_axis_cos,
-            stop_inlier_fraction, rng,
+            stop_inlier_fraction, rng, None,
         )
-    else:
-        # Parallel path: split trials across threads
-        import concurrent.futures
-        trials_per_worker = max(1, trials // n_workers)
-        seeds = rng.integers(0, 2**31, size=n_workers).tolist()
-        batch_sizes = [trials_per_worker] * n_workers
-        # distribute remainder to last worker
-        batch_sizes[-1] += trials - sum(batch_sizes)
+        return best
 
-        def _run_batch(batch_trials: int, seed: int):
-            child_rng = np.random.default_rng(seed)
-            return _ransac_trials_batch(
-                points, best, best_score, threshold, batch_trials, sample_size,
-                quality_order, known_radius, orientation_axis, min_axis_cos,
-                stop_inlier_fraction, child_rng,
-            )
+    import concurrent.futures
 
-        with concurrent.futures.ThreadPoolExecutor(max_workers=n_workers) as pool:
-            futures = [pool.submit(_run_batch, bs, sd)
-                       for bs, sd in zip(batch_sizes, seeds)]
-            for fut in concurrent.futures.as_completed(futures):
-                candidate, score = fut.result()
-                if score > best_score:
-                    best, best_score = candidate, score
-
+    with concurrent.futures.ThreadPoolExecutor(max_workers=n_workers) as pool:
+        best, _ = _ransac_trials(
+            points, best, best_score, threshold, trials, sample_size,
+            quality_order, known_radius, orientation_axis, min_axis_cos,
+            stop_inlier_fraction, rng, pool,
+        )
     return best
 
 
-def _ransac_trials_batch(
+# Candidates scored per batch, and the cap on (points x candidates) evaluated at
+# once, which bounds the scratch memory of a batch to a few MB.
+_SCORE_BATCH = 16
+_SCORE_BLOCK_ELEMS = 1 << 19
+
+
+def _resolve_n_jobs(n_jobs: int) -> int:
+    if n_jobs == -1:
+        import os
+
+        return max(1, os.cpu_count() or 1)
+    return max(1, n_jobs)
+
+
+def _score_block_rows(n_candidates: int) -> int:
+    return max(1, _SCORE_BLOCK_ELEMS // max(1, n_candidates))
+
+
+def _ransac_trials(
     points: np.ndarray,
     best: tuple,
     best_score: tuple,
@@ -647,40 +644,115 @@ def _ransac_trials_batch(
     min_axis_cos: Optional[float],
     stop_inlier_fraction: Optional[float],
     rng: np.random.Generator,
+    pool,
 ) -> tuple:
-    """Run a batch of RANSAC trials (PROSAC + uniform) and return the best candidate."""
+    """Run the RANSAC trials (PROSAC then uniform) and return the best candidate.
+
+    Candidates are generated one at a time but scored in batches. The RNG state
+    after each candidate is kept so that an early stop leaves *rng* exactly where
+    a one-candidate-at-a-time loop would.
+    """
     n = points.shape[0]
     k = min(sample_size, n)
     prosac_trials = trials // 2
-    prosac_pool = min(k, n)
-    pool_growth = max(1, (n - prosac_pool) // max(1, prosac_trials))
+    pool_growth = max(1, (n - k) // max(1, prosac_trials))
+    centroid = points.mean(axis=0)
+    centered = points - centroid
 
-    for trial_idx in range(trials):
-        if trial_idx < prosac_trials:
-            prosac_pool = min(prosac_pool + pool_growth, n)
-            pool = quality_order[:prosac_pool]
-            subset_idx = rng.choice(prosac_pool, min(k, prosac_pool), replace=False)
-            subset = points[pool[subset_idx]]
-        else:
-            subset = points[rng.choice(n, k, replace=False)]
+    trial_idx = 0
+    while trial_idx < trials:
+        batch_end = min(trials, trial_idx + _SCORE_BATCH)
+        candidates = []
+        states = []
+        for t in range(trial_idx, batch_end):
+            if t < prosac_trials:
+                prosac_pool = min(k + (t + 1) * pool_growth, n)
+                subset_idx = rng.choice(prosac_pool, min(k, prosac_pool), replace=False)
+                subset = points[quality_order[subset_idx]]
+            else:
+                subset = points[rng.choice(n, k, replace=False)]
 
-        try:
-            candidate = _pca_initial(subset)
-        except np.linalg.LinAlgError:
+            try:
+                candidate = _pca_initial(subset)
+            except np.linalg.LinAlgError:
+                continue
+            if not _axis_allowed(candidate[1], orientation_axis, min_axis_cos):
+                continue
+            if known_radius is not None:
+                candidate = (candidate[0], candidate[1], float(known_radius))
+            candidates.append(candidate)
+            states.append(rng.bit_generator.state)
+        trial_idx = batch_end
+        if not candidates:
             continue
-        if not _axis_allowed(candidate[1], orientation_axis, min_axis_cos):
-            continue
-        if known_radius is not None:
-            candidate = (candidate[0], candidate[1], float(known_radius))
-        res = residuals_to_cylinder(points, *candidate)
-        score = _candidate_score(res, threshold)
-        if score > best_score:
-            best = candidate
-            best_score = score
-            if stop_inlier_fraction is not None and score[1] / n >= stop_inlier_fraction:
-                break
+
+        scores = _batch_candidate_scores(centered, centroid, candidates, threshold, pool)
+        for candidate, score, state in zip(candidates, scores, states):
+            if score > best_score:
+                best = candidate
+                best_score = score
+                if stop_inlier_fraction is not None and score[1] / n >= stop_inlier_fraction:
+                    rng.bit_generator.state = state
+                    return best, best_score
 
     return best, best_score
+
+
+def _batch_candidate_scores(
+    centered: np.ndarray,
+    centroid: np.ndarray,
+    candidates: list,
+    threshold: float,
+    pool,
+) -> list[tuple[float, float]]:
+    """``_candidate_score`` for many candidates in one pass over the points.
+
+    Each candidate's radial distance is taken in its own cross-section basis, so
+    all candidates share a single ``points @ basis`` product. Points are processed
+    in fixed-size blocks whose partial sums are added in block order, making the
+    scores independent of how many threads evaluate the blocks.
+    """
+    n_cand = len(candidates)
+    basis = np.empty((3, 2 * n_cand))
+    offsets = np.empty(2 * n_cand)
+    radii = np.empty(n_cand)
+    for j, (p0, axis, radius) in enumerate(candidates):
+        u, v = _orthonormal_basis(axis)
+        rel = p0 - centroid
+        basis[:, 2 * j] = u
+        basis[:, 2 * j + 1] = v
+        offsets[2 * j] = rel @ u
+        offsets[2 * j + 1] = rel @ v
+        radii[j] = radius
+    sigma = threshold / 3.0
+
+    def score_block(start: int, stop: int) -> tuple[np.ndarray, np.ndarray]:
+        proj = centered[start:stop] @ basis
+        proj -= offsets
+        proj *= proj
+        res = np.sqrt(proj[:, 0::2] + proj[:, 1::2])
+        res -= radii
+        hard = (np.abs(res) <= threshold).sum(axis=0)
+        res /= sigma
+        res *= res
+        res *= -0.5
+        np.exp(res, out=res)
+        return res.sum(axis=0), hard
+
+    n = centered.shape[0]
+    rows = _score_block_rows(n_cand)
+    bounds = [(s, min(s + rows, n)) for s in range(0, n, rows)]
+    if pool is not None and len(bounds) > 1:
+        partials = list(pool.map(lambda b: score_block(*b), bounds))
+    else:
+        partials = [score_block(*b) for b in bounds]
+
+    soft = np.zeros(n_cand)
+    hard = np.zeros(n_cand, dtype=np.int64)
+    for block_soft, block_hard in partials:
+        soft += block_soft
+        hard += block_hard
+    return [(float(soft[j]), float(hard[j])) for j in range(n_cand)]
 
 
 def _axis_allowed(axis: np.ndarray, orientation_axis: Optional[np.ndarray], min_axis_cos: Optional[float]) -> bool:
